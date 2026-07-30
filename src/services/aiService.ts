@@ -51,5 +51,18 @@ const callGeminiAPI = async (prompt: string) => {
 export const getInsight = async (prompt: string) => {
   const response = await callGeminiAPI(prompt)
   const json = response.candidates[0].content.parts[0].text
+
   return JSON.parse(json) as InsightData
+}
+
+export const askFinancialQuestion = async (prompt: string): Promise<string> => {
+  const response = await callGeminiAPI(prompt)
+
+  const answer = response.candidates?.[0]?.content?.parts?.[0]?.text
+
+  if (!answer) {
+    throw new Error('A IA não retornou uma resposta.')
+  }
+
+  return answer.trim()
 }
